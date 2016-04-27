@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Préférences"
+        android:id="@+id/textViewTitre"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="39dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Température froide (°C) :"
+        android:id="@+id/textView"
+        android:layout_marginTop="64dp"
+        android:layout_below="@+id/textViewTitre"
+        android:gravity="center"
+        android:layout_alignRight="@+id/textViewTitre"
+        android:layout_alignEnd="@+id/textViewTitre"
+        android:layout_alignLeft="@+id/textView2"
+        android:layout_alignStart="@+id/textView2" />
+
+    <EditText
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/editTextTemperatureFroide"
+        android:editable="true"
+        android:gravity="center"
+        android:layout_alignTop="@+id/textView"
+        android:layout_toRightOf="@+id/textView"
+        android:layout_toEndOf="@+id/textView"
+        android:layout_marginLeft="30dp"
+        android:layout_marginStart="30dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Température chaude (°C) :"
+        android:id="@+id/textView2"
+        android:layout_centerVertical="true"
+        android:layout_alignRight="@+id/textViewTitre"
+        android:layout_alignEnd="@+id/textViewTitre"
+        android:gravity="center"/>
+
+    <EditText
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/editTextTemperatureChaude"
+        android:editable="true"
+        android:gravity="center"
+        android:layout_centerVertical="true"
+        android:layout_alignLeft="@+id/editTextTemperatureFroide"
+        android:layout_alignStart="@+id/editTextTemperatureFroide" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sauvegarder"
+        android:id="@+id/buttonSauvegarde"
+        android:layout_marginBottom="29dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/textView2"
+        android:layout_alignStart="@+id/textView2" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cancel"
+        android:id="@+id/buttonCancel"
+        android:layout_alignTop="@+id/buttonSauvegarde"
+        android:layout_alignRight="@+id/editTextTemperatureChaude"
+        android:layout_alignEnd="@+id/editTextTemperatureChaude" />
+</RelativeLayout>

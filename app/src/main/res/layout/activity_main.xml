@@ -9,4 +9,80 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="ca.ulaval.mp.mp.MainActivity">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Large Text"
+        android:id="@+id/textViewTemperature"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Medium Text"
+        android:id="@+id/textViewConditionGenerale"
+        android:layout_below="@+id/textViewTemperature"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Small Text"
+        android:id="@+id/textViewLocation"
+        android:layout_below="@+id/textViewConditionGenerale"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Préférences"
+        android:id="@+id/buttonPreferences"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Prévisions"
+        android:id="@+id/buttonPrevisions"
+        android:layout_above="@+id/buttonPreferences"
+        android:layout_alignRight="@+id/buttonPreferences"
+        android:layout_alignEnd="@+id/buttonPreferences"
+        android:layout_alignLeft="@+id/buttonPreferences"
+        android:layout_alignStart="@+id/buttonPreferences" />
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/imageViewAccessoire"
+        android:layout_below="@+id/textViewLocation"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="54dp" />
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/imageViewHaut"
+        android:layout_below="@+id/imageViewAccessoire"
+        android:layout_alignLeft="@+id/imageViewAccessoire"
+        android:layout_alignStart="@+id/imageViewAccessoire" />
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/imageViewBas"
+        android:layout_below="@+id/imageViewHaut"
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/imageViewSoulier"
+        android:layout_below="@+id/imageViewBas"
+        android:layout_centerHorizontal="true" />
+
 </RelativeLayout>
