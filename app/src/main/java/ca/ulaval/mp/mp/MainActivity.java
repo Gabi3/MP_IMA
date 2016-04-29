@@ -77,12 +77,8 @@ public class MainActivity extends AppCompatActivity {
         location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
         new TodayWeather().execute();
-        new PlaySound().execute();
-        try {
-            takeInputStream(sound);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        new TextToSpeach().execute();
+        playAudio(sound);
 
         buttonPrevisions = (Button) findViewById(R.id.buttonPrevisions);
         buttonPreferences = (Button) findViewById(R.id.buttonPreferences);
@@ -138,6 +134,14 @@ public class MainActivity extends AppCompatActivity {
                 editor.commit();
                 chargerElementsVisuels();
             }
+        }
+    }
+
+    private void playAudio(InputStream inAdio){
+        try {
+            takeInputStream(inAdio);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -252,7 +256,7 @@ public class MainActivity extends AppCompatActivity {
     MediaPlayer mp = new MediaPlayer();
 
 
-    private class PlaySound extends AsyncTask<String,Integer, HttpResponse<InputStream>> {
+    private class TextToSpeach extends AsyncTask<String,Integer, HttpResponse<InputStream>> {
 
         protected HttpResponse<InputStream> doInBackground(String... msg) {
 
