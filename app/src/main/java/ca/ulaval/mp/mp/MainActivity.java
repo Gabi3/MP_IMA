@@ -5,12 +5,25 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationManager;
+import android.media.MediaPlayer;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -45,6 +58,15 @@ public class MainActivity extends AppCompatActivity {
     private String conditionGenerale = CONDITION_ENSOLEILLE;
 
 
+    //pour text to speach
+    private File convertedFile;
+    private FileOutputStream out;
+    private InputStream sound;
+
+    //pour todayWeather
+    private String body;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +75,14 @@ public class MainActivity extends AppCompatActivity {
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+        new TodayWeather().execute();
+        new PlaySound().execute();
+        try {
+            takeInputStream(sound);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         buttonPrevisions = (Button) findViewById(R.id.buttonPrevisions);
         buttonPreferences = (Button) findViewById(R.id.buttonPreferences);
@@ -189,5 +219,114 @@ public class MainActivity extends AppCompatActivity {
     private boolean estNeigeux(){
         return conditionGenerale.equals(CONDITION_NEIGE);
     }
+
+    private class TodayWeather extends AsyncTask<String,Integer, HttpResponse<String>> {
+
+        protected HttpResponse<String> doInBackground(String... msg) {
+
+            HttpResponse<String> request = null;
+            try {
+                request = Unirest.get("https://simple-weather.p.mashape.com/weather?lat=46.8&lng=-71.3")
+                        .header("X-Mashape-Key", "xn55jeUBg0mshwmZSIrB2dNbudabp1xomN8jsnXryHN4ARtYyo")
+                        .header("Accept", "text/plain")
+                        .asString();
+            } catch (UnirestException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+            return request;
+        }
+
+        protected void onProgressUpdate(Integer...integers) {
+        }
+
+        protected void onPostExecute(HttpResponse<String> response) {
+            TextView txtView = (TextView) findViewById(R.id.textViewTemperature);
+            txtView.setText(response.getBody());
+            body=response.getBody();
+
+        }
+    }
+
+    MediaPlayer mp = new MediaPlayer();
+
+
+    private class PlaySound extends AsyncTask<String,Integer, HttpResponse<InputStream>> {
+
+        protected HttpResponse<InputStream> doInBackground(String... msg) {
+
+            HttpResponse<InputStream> request = null;
+            try {
+                request = Unirest.post("https://voicerss-text-to-speech.p.mashape.com/?key=98db973a936a418fad539e62ab2ce0b7")
+                        .header("X-Mashape-Key", "xn55jeUBg0mshwmZSIrB2dNbudabp1xomN8jsnXryHN4ARtYyo")
+                        .header("Content-Type", "application/x-www-form-urlencoded")
+                        .field("c", "mp3")
+                        .field("f", "8khz_8bit_mono")
+                        .field("hl", "en-us")
+                        .field("r", "0")
+                        .field("src", body)
+                        .asBinary();
+            } catch (UnirestException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+            return request;
+        }
+
+        protected void onProgressUpdate(Integer...integers) {
+        }
+
+        protected void onPostExecute(HttpResponse<InputStream> response) {
+            sound = response.getBody();
+
+
+        }
+    }
+
+    public void takeInputStream(InputStream stream) throws IOException
+    {
+        //fileBeingBuffered = (FileInputStream) stream;
+        //Toast.makeText(this, "sucessful stream conversion.", Toast.LENGTH_SHORT).show();
+        try
+        {
+            convertedFile = File.createTempFile("convertedFile", ".dat", getDir("filez", 0));
+            Toast.makeText(this, "Successful file and folder creation.", Toast.LENGTH_SHORT).show();
+
+            out = new FileOutputStream(convertedFile);
+            Toast.makeText(this, "Success out set as output stream.", Toast.LENGTH_SHORT).show();
+
+            //RIGHT AROUND HERE -----------
+
+            byte buffer[] = new byte[16384];
+            int length = 0;
+            while ( (length = stream.read(buffer)) != -1 )
+            {
+                out.write(buffer,0, length);
+            }
+
+            //stream.read(buffer);
+            Toast.makeText(this, "Success buffer is filled.", Toast.LENGTH_SHORT).show();
+            out.close();
+
+            mp = new MediaPlayer();
+
+            FileInputStream fis = new FileInputStream(convertedFile);
+            mp.setDataSource(fis.getFD());
+
+            Toast.makeText(this, "Success, Path has been set", Toast.LENGTH_SHORT).show();
+
+            mp.prepare();
+            mp.start();
+            Toast.makeText(this, "son jouer", Toast.LENGTH_SHORT).show();
+        }catch(Exception e)
+        {
+
+            e.printStackTrace();
+        }
+    }
+
+
 
 }

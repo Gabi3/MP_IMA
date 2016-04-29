@@ -61,6 +61,8 @@ public class PrevisionActivity  extends ListActivity {
 
     }
 
+    private int test;
+
     private class ForeCast extends AsyncTask<String,Integer, HttpResponse<JsonNode>> {
 
         protected HttpResponse<JsonNode> doInBackground(String... msg) {
